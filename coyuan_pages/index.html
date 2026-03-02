@@ -9,8 +9,8 @@
 
 <style>
   :root{
-    /* 统一两页 icon 尺寸（和 entrance 一致） */
     --icon-size: clamp(22px, 4vw, 48px);
+    --walking-scale: 0.7; /* ✅ 只改这里就能控制 walking 大小 */
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -36,7 +36,7 @@
 
   .gif-stack{
     position:relative;
-    width:70vw;
+    width:80vw;
     max-width:900px;
   }
 
@@ -47,12 +47,11 @@
     top:50%; left:50%;
     width:100%;
     height:auto;
-    transform:translate(-50%, -50%) scale(0.6);
+    transform:translate(-50%, -50%) scale(var(--walking-scale));
     transform-origin:center center;
     display:block;
   }
 
-  /* 尽量禁止保存/拖拽 */
   img{
     -webkit-user-drag: none;
     user-select: none;
@@ -95,7 +94,6 @@
     pointer-events:none;
   }
 
-  /* 第二页覆盖层 */
   .page-2{
     position:fixed;
     inset:0;
@@ -105,10 +103,7 @@
     transition: opacity 320ms ease;
     z-index:999;
   }
-  .page-2.show{
-    opacity:1;
-    pointer-events:auto;
-  }
+  .page-2.show{ opacity:1; pointer-events:auto; }
 
   .page-2 .content{
     height:100%;
@@ -121,14 +116,12 @@
   .page-2 .text-block{
     text-align:left;
     color:#fff;
-    font-family:'Swanky and Moo Moo', cursive;
     font-size: clamp(22px, 4vw, 44px);
     line-height: 1.15;
   }
 
   .page-2 .line-2{
     margin-top: 14px;
-    opacity: 1;
     animation: softPulse 2.6s ease-in-out infinite;
   }
 
@@ -138,11 +131,10 @@
     100% { opacity: 1; }
   }
 
-  /* 第二页右对齐 icon 按钮 */
   .back-row{
     margin-top: 16px;
     display:flex;
-    justify-content:flex-end; /* 右对齐到文字块右边 */
+    justify-content:flex-end;
   }
 
   .back-btn{
@@ -152,10 +144,9 @@
     margin:0;
     cursor:pointer;
     transition: opacity 120ms ease;
-
+    -webkit-tap-highlight-color: transparent;
     user-select:none;
     -webkit-user-select:none;
-    -webkit-tap-highlight-color: transparent;
   }
   .back-btn:active{ opacity:0.4; }
 
@@ -170,7 +161,6 @@
 
 <body>
 
-  <!-- 第一页 -->
   <div class="center-stack" id="page1">
     <div class="gif-stack" id="gifStack">
       <img class="gif-1" src="./主域名界面/bg_folder.gif" alt="">
@@ -183,29 +173,30 @@
     </div>
   </div>
 
-  <!-- 第二页 -->
   <div class="page-2" id="page2" aria-hidden="true">
     <div class="content">
       <div class="text-block">
         <div class="line-1">Designing rhythm in digital space</div>
         <div class="line-2">Something amazing is coming...</div>
 
-        <!-- 右对齐 icon（返回） -->
         <div class="back-row">
           <button class="back-btn" id="backBtn" type="button" aria-label="Back">
-            <!-- 这里用你的返回 icon（建议单独一张，比如 back_icon.png） -->
             <img src="./主域名界面/entrance_icon.png" alt="">
           </button>
         </div>
-
       </div>
     </div>
   </div>
 
 <script>
-  const walkingScale = 0.6;   // 与 CSS scale 一致
   const gap = 10;
-  const btnRatio = 2 / 5;     // 按钮宽度 = walking 的 2/5
+  const btnRatio = 2 / 5;
+
+  function getWalkingScale(){
+    const v = getComputedStyle(document.documentElement).getPropertyValue('--walking-scale').trim();
+    const n = parseFloat(v);
+    return Number.isFinite(n) ? n : 0.7;
+  }
 
   function positionEntrance() {
     const walking = document.getElementById('walking');
@@ -213,6 +204,7 @@
     const stack = document.getElementById('gifStack');
     if (!walking.complete || !walking.naturalWidth) return;
 
+    const walkingScale = getWalkingScale();
     const stackWidth = stack.clientWidth;
 
     const walkingWidth = stackWidth * walkingScale;
