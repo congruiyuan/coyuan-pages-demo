@@ -8,160 +8,259 @@
 <link href="https://fonts.googleapis.com/css2?family=Swanky+and+Moo+Moo&display=swap" rel="stylesheet">
 
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+  :root{
+    /* 统一两页 icon 尺寸（和 entrance 一致） */
+    --icon-size: clamp(22px, 4vw, 48px);
+  }
 
-body {
-  height: 100vh;
-  width: 100vw;
-  background-image: url("./主域名界面/噪点蓝色背景.png");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  position: relative;
-  overflow: hidden;
-}
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-/* 整体居中 */
-.center-stack {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
+  body{
+    height:100vh; width:100vw;
+    background-image:url("./主域名界面/噪点蓝色背景.png");
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    position:relative;
+    overflow:hidden;
+    font-family:'Swanky and Moo Moo', cursive;
+  }
 
-/* 叠图容器 */
-.gif-stack {
-  position: relative;
-  width: 70vw;
-  max-width: 900px;
-}
+  button, a, img, div, span { -webkit-tap-highlight-color: transparent; }
 
-/* folder */
-.gif-1 {
-  width: 100%;
-  height: auto;
-  display: block;
-}
+  .center-stack{
+    position:absolute;
+    top:50%; left:50%;
+    transform:translate(-50%, -50%);
+  }
 
-/* walking = 60% */
-.gif-2 {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 100%;
-  height: auto;
-  transform: translate(-50%, -50%) scale(0.6);
-  transform-origin: center center;
-  display: block;
-}
+  .gif-stack{
+    position:relative;
+    width:70vw;
+    max-width:900px;
+  }
 
-/* entrance 按钮 */
-.entrance {
-  position: absolute;
-  background: none;
-  border: none;
-  padding: 0;
-  margin: 0;
+  .gif-1{ width:100%; height:auto; display:block; }
 
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
+  .gif-2{
+    position:absolute;
+    top:50%; left:50%;
+    width:100%;
+    height:auto;
+    transform:translate(-50%, -50%) scale(0.6);
+    transform-origin:center center;
+    display:block;
+  }
 
-  color: #fff;
+  /* 尽量禁止保存/拖拽 */
+  img{
+    -webkit-user-drag: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    pointer-events: none;
+  }
 
-  /* 响应式字体 */
-  font-size: clamp(22px, 4vw, 48px);
-  font-family: 'Swanky and Moo Moo', cursive;
+  .entrance{
+    position:absolute;
+    background:none;
+    border:none;
+    padding:0;
+    margin:0;
 
-  cursor: pointer;
-  white-space: nowrap;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
 
-  /* 禁止文字选中 */
-  user-select: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-}
+    color:#fff;
+    font-size:clamp(22px, 4vw, 48px);
+    font-family:'Swanky and Moo Moo', cursive;
 
-.entrance img {
-  width: clamp(22px, 4vw, 48px);
-  height: auto;
-  display: block;
-  pointer-events: none;
-}
+    cursor:pointer;
+    white-space:nowrap;
+
+    user-select:none;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+
+    transition: opacity 120ms ease;
+  }
+  .entrance:active{ opacity:0.4; }
+
+  .entrance img{
+    width: var(--icon-size);
+    height:auto;
+    display:block;
+    pointer-events:none;
+  }
+
+  /* 第二页覆盖层 */
+  .page-2{
+    position:fixed;
+    inset:0;
+    background:#32567D;
+    opacity:0;
+    pointer-events:none;
+    transition: opacity 320ms ease;
+    z-index:999;
+  }
+  .page-2.show{
+    opacity:1;
+    pointer-events:auto;
+  }
+
+  .page-2 .content{
+    height:100%;
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .page-2 .text-block{
+    text-align:left;
+    color:#fff;
+    font-family:'Swanky and Moo Moo', cursive;
+    font-size: clamp(22px, 4vw, 44px);
+    line-height: 1.15;
+  }
+
+  .page-2 .line-2{
+    margin-top: 14px;
+    opacity: 1;
+    animation: softPulse 2.6s ease-in-out infinite;
+  }
+
+  @keyframes softPulse{
+    0%   { opacity: 1; }
+    50%  { opacity: 0.7; }
+    100% { opacity: 1; }
+  }
+
+  /* 第二页右对齐 icon 按钮 */
+  .back-row{
+    margin-top: 16px;
+    display:flex;
+    justify-content:flex-end; /* 右对齐到文字块右边 */
+  }
+
+  .back-btn{
+    background:none;
+    border:none;
+    padding:0;
+    margin:0;
+    cursor:pointer;
+    transition: opacity 120ms ease;
+
+    user-select:none;
+    -webkit-user-select:none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .back-btn:active{ opacity:0.4; }
+
+  .back-btn img{
+    width: var(--icon-size);
+    height:auto;
+    display:block;
+    pointer-events:none;
+  }
 </style>
 </head>
 
 <body>
 
-<div class="center-stack">
-  <div class="gif-stack" id="gifStack">
-    <img class="gif-1" src="./主域名界面/bg_folder.gif" alt="">
-    <img class="gif-2" id="walking" src="./主域名界面/walking_man.gif" alt="">
+  <!-- 第一页 -->
+  <div class="center-stack" id="page1">
+    <div class="gif-stack" id="gifStack">
+      <img class="gif-1" src="./主域名界面/bg_folder.gif" alt="">
+      <img class="gif-2" id="walking" src="./主域名界面/walking_man.gif" alt="">
 
-    <button class="entrance" id="entranceBtn" type="button">
-      <span>Entrance</span>
-      <img src="./主域名界面/entrance_icon.png" alt="">
-    </button>
-
+      <button class="entrance" id="entranceBtn" type="button" aria-label="Entrance">
+        <span>Entrance</span>
+        <img src="./主域名界面/entrance_icon.png" alt="">
+      </button>
+    </div>
   </div>
-</div>
+
+  <!-- 第二页 -->
+  <div class="page-2" id="page2" aria-hidden="true">
+    <div class="content">
+      <div class="text-block">
+        <div class="line-1">Designing rhythm in digital space</div>
+        <div class="line-2">Something amazing is coming...</div>
+
+        <!-- 右对齐 icon（返回） -->
+        <div class="back-row">
+          <button class="back-btn" id="backBtn" type="button" aria-label="Back">
+            <!-- 这里用你的返回 icon（建议单独一张，比如 back_icon.png） -->
+            <img src="./主域名界面/entrance_icon.png" alt="">
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
 
 <script>
-function positionEntrance() {
-  const walking = document.getElementById('walking');
-  const btn = document.getElementById('entranceBtn');
-  const stack = document.getElementById('gifStack');
+  const walkingScale = 0.6;   // 与 CSS scale 一致
+  const gap = 10;
+  const btnRatio = 2 / 5;     // 按钮宽度 = walking 的 2/5
 
-  if (!walking.complete) return;
+  function positionEntrance() {
+    const walking = document.getElementById('walking');
+    const btn = document.getElementById('entranceBtn');
+    const stack = document.getElementById('gifStack');
+    if (!walking.complete || !walking.naturalWidth) return;
 
-  const wRect = walking.getBoundingClientRect();
-  const sRect = stack.getBoundingClientRect();
+    const stackWidth = stack.clientWidth;
 
-  // walking 实际宽度
-  const walkingWidth = wRect.width;
+    const walkingWidth = stackWidth * walkingScale;
+    const walkingHeight = walkingWidth * (walking.naturalHeight / walking.naturalWidth);
 
-  // 按钮宽度 = walking 的 1/3（带最小保护）
-  const btnWidth = Math.max(walkingWidth * 2/ 5, 160);
-  btn.style.width = btnWidth + "px";
-  btn.style.justifyContent = "center";
+    const btnWidth = Math.max(walkingWidth * btnRatio, 160);
+    btn.style.width = btnWidth + "px";
+    btn.style.justifyContent = "center";
 
-  const btnRect = btn.getBoundingClientRect();
+    const stackHeight = stack.clientHeight;
+    const walkingRight = (stackWidth / 2) + (walkingWidth / 2);
+    const walkingBottom = (stackHeight / 2) + (walkingHeight / 2);
 
-  const wRight = wRect.right - sRect.left;
-  const wBottom = wRect.bottom - sRect.top;
-
-  const top = wBottom + 10;
-  const left = wRight - btnRect.width;
-
-  btn.style.top = `${top}px`;
-  btn.style.left = `${left}px`;
-}
-
-// 页面加载后执行
-window.addEventListener('load', () => {
-  positionEntrance();
-  requestAnimationFrame(positionEntrance);
-  setTimeout(positionEntrance, 100);
-
-  // 字体加载完成后重新计算
-  if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(() => {
-      positionEntrance();
-      requestAnimationFrame(positionEntrance);
-    });
+    btn.style.left = (walkingRight - btnWidth) + "px";
+    btn.style.top = (walkingBottom + gap) + "px";
   }
-});
 
-// resize 重新计算
-window.addEventListener('resize', () => {
-  positionEntrance();
-  requestAnimationFrame(positionEntrance);
-});
+  function rerunPositioning() {
+    positionEntrance();
+    requestAnimationFrame(positionEntrance);
+    setTimeout(positionEntrance, 100);
+  }
+
+  window.addEventListener('load', () => {
+    rerunPositioning();
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(rerunPositioning);
+    }
+  });
+
+  window.addEventListener('resize', rerunPositioning);
+
+  document.addEventListener('contextmenu', (e) => e.preventDefault());
+  document.addEventListener('dragstart', (e) => e.preventDefault());
+
+  const entranceBtn = document.getElementById('entranceBtn');
+  const backBtn = document.getElementById('backBtn');
+  const page2 = document.getElementById('page2');
+
+  entranceBtn.addEventListener('click', () => {
+    page2.classList.add('show');
+    page2.setAttribute('aria-hidden', 'false');
+  });
+
+  backBtn.addEventListener('click', () => {
+    page2.classList.remove('show');
+    page2.setAttribute('aria-hidden', 'true');
+  });
 </script>
 
 </body>
