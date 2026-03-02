@@ -3,9 +3,45 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Demo2</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      height: 100vh;
+      width: 100vw;
+      background-image: url("./主域名界面/噪点蓝色背景.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .gif-layer {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .gif-layer img {
+      max-width: 60vw;
+      height: auto;
+    }
+  </style>
 </head>
+
 <body>
-  <img src="./主域名界面/噪点蓝色背景.png" alt="">
+
+  <div class="gif-layer">
+    <img src="./主域名界面/bg_folder.gif" alt="">
+  </div>
+
 </body>
 </html>
