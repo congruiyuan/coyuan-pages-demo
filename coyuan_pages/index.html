@@ -1,142 +1,168 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>coyuan_pages</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>coyuan_pages</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Swanky+and+Moo+Moo&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Swanky+and+Moo+Moo&display=swap" rel="stylesheet">
 
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-    body {
-      height: 100vh;
-      width: 100vw;
-      background-image: url("./主域名界面/噪点蓝色背景.png");
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      position: relative;
-      overflow: hidden;
-    }
+body {
+  height: 100vh;
+  width: 100vw;
+  background-image: url("./主域名界面/噪点蓝色背景.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  overflow: hidden;
+}
 
-    /* 整体居中 */
-    .center-stack {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
+/* 整体居中 */
+.center-stack {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 
-    /* 叠图容器 */
-    .gif-stack {
-      position: relative;
-      width: 70vw;
-      max-width: 900px;
-    }
+/* 叠图容器 */
+.gif-stack {
+  position: relative;
+  width: 70vw;
+  max-width: 900px;
+}
 
-    /* folder */
-    .gif-1 {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
+/* folder */
+.gif-1 {
+  width: 100%;
+  height: auto;
+  display: block;
+}
 
-    /* walking：先用正常宽度 + transform 缩放到70% */
-    .gif-2 {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 100%;
-      height: auto;
-      transform: translate(-50%, -50%) scale(0.6);
-      transform-origin: center center;
-      display: block;
-    }
+/* walking = 60% */
+.gif-2 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: auto;
+  transform: translate(-50%, -50%) scale(0.6);
+  transform-origin: center center;
+  display: block;
+}
 
-    /* entrance：我们改为绝对定位，由 JS 精确摆放 */
-    .entrance {
-      position: absolute;
-      background: none;
-      border: none;
-      padding: 0;
-      margin: 0;
+/* entrance 按钮 */
+.entrance {
+  position: absolute;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
 
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 
-      color: #fff;
-      font-size: 48px;
-      font-family: 'Swanky and Moo Moo', cursive;
-      cursor: pointer;
-      white-space: nowrap;
-    }
+  color: #fff;
 
-    .entrance img {
-      width: 48px;
-      height: auto;
-      display: block;
-    }
-  </style>
+  /* 响应式字体 */
+  font-size: clamp(22px, 4vw, 48px);
+  font-family: 'Swanky and Moo Moo', cursive;
+
+  cursor: pointer;
+  white-space: nowrap;
+
+  /* 禁止文字选中 */
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+.entrance img {
+  width: clamp(22px, 4vw, 48px);
+  height: auto;
+  display: block;
+  pointer-events: none;
+}
+</style>
 </head>
 
 <body>
-  <div class="center-stack">
-    <div class="gif-stack" id="gifStack">
-      <img class="gif-1" src="./主域名界面/bg_folder.gif" alt="">
-      <img class="gif-2" id="walking" src="./主域名界面/walking_man.gif" alt="">
 
-      <button class="entrance" id="entranceBtn" type="button">
-        <span>Entrance</span>
-        <img src="./主域名界面/entrance_icon.png" alt="">
-      </button>
-    </div>
+<div class="center-stack">
+  <div class="gif-stack" id="gifStack">
+    <img class="gif-1" src="./主域名界面/bg_folder.gif" alt="">
+    <img class="gif-2" id="walking" src="./主域名界面/walking_man.gif" alt="">
+
+    <button class="entrance" id="entranceBtn" type="button">
+      <span>Entrance</span>
+      <img src="./主域名界面/entrance_icon.png" alt="">
+    </button>
+
   </div>
+</div>
 
-  <script>
-    function positionEntrance() {
-      const walking = document.getElementById('walking');
-      const btn = document.getElementById('entranceBtn');
-      const stack = document.getElementById('gifStack');
+<script>
+function positionEntrance() {
+  const walking = document.getElementById('walking');
+  const btn = document.getElementById('entranceBtn');
+  const stack = document.getElementById('gifStack');
 
-      if (!walking.complete) return;
+  if (!walking.complete) return;
 
-      // walking 的实际渲染区域（包含 transform scale 后的真实边界）
-      const wRect = walking.getBoundingClientRect();
-      const sRect = stack.getBoundingClientRect();
+  const wRect = walking.getBoundingClientRect();
+  const sRect = stack.getBoundingClientRect();
 
-      // 按钮自身宽度（用于右对齐）
-      const btnRect = btn.getBoundingClientRect();
+  // walking 实际宽度
+  const walkingWidth = wRect.width;
 
-      // walking 相对 stack 的坐标
-      const wRight = wRect.right - sRect.left;
-      const wBottom = wRect.bottom - sRect.top;
+  // 按钮宽度 = walking 的 1/3（带最小保护）
+  const btnWidth = Math.max(walkingWidth * 2/ 5, 160);
+  btn.style.width = btnWidth + "px";
+  btn.style.justifyContent = "center";
 
-      // 规则：
-      // 1) 按钮顶部 = walking底部 + 10px
-      // 2) 按钮右边 = walking右边
-      const top = wBottom + 10;
-      const left = wRight - btnRect.width;
+  const btnRect = btn.getBoundingClientRect();
 
-      btn.style.top = `${top}px`;
-      btn.style.left = `${left}px`;
-    }
+  const wRight = wRect.right - sRect.left;
+  const wBottom = wRect.bottom - sRect.top;
 
-    // 首次：等图片加载后定位
-    window.addEventListener('load', () => {
+  const top = wBottom + 10;
+  const left = wRight - btnRect.width;
+
+  btn.style.top = `${top}px`;
+  btn.style.left = `${left}px`;
+}
+
+// 页面加载后执行
+window.addEventListener('load', () => {
+  positionEntrance();
+  requestAnimationFrame(positionEntrance);
+  setTimeout(positionEntrance, 100);
+
+  // 字体加载完成后重新计算
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(() => {
       positionEntrance();
-      // 某些 gif 首次渲染会延迟一帧，再补一次
       requestAnimationFrame(positionEntrance);
-      setTimeout(positionEntrance, 100);
     });
+  }
+});
 
-    // 窗口变化时重新定位（手机横竖屏/缩放）
-    window.addEventListener('resize', () => {
-      positionEntrance();
-      requestAnimationFrame(positionEntrance);
-    });
-  </script>
+// resize 重新计算
+window.addEventListener('resize', () => {
+  positionEntrance();
+  requestAnimationFrame(positionEntrance);
+});
+</script>
+
 </body>
 </html>
