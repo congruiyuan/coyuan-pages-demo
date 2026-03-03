@@ -3,7 +3,23 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>coyuan_pages</title>
+
+<!-- ✅ 微信分享卡片：标题/描述/缩略图（og:image 一定要用 https 绝对地址） -->
+<title>coyuan pages</title>
+<meta name="description" content="archive idea" />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content="coyuan pages" />
+<meta property="og:description" content="archive idea" />
+
+<!-- ⚠️ 必填：把下面两行改成你真实的线上地址 -->
+<meta property="og:url" content="https://congruiyuan.com/" />
+<meta property="og:image" content="https://congruiyuan.com/assets/share-cover.png" />
+
+<!-- 可选：兼容一些抓取习惯 -->
+<meta itemprop="name" content="coyuan pages" />
+<meta itemprop="description" content="archive idea" />
+<meta itemprop="image" content="https://congruiyuan.com/assets/share-cover.png" />
 
 <!-- 更稳的字体加载（减少闪烁/替换感） -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -86,7 +102,7 @@ img{
 
   color:#fff;
   font-size:clamp(22px,4vw,48px);
-  font-family:'Swanky and Moo Moo', cursive; /* ✅ 明确指定字体 */
+  font-family:'Swanky and Moo Moo', cursive;
 
   cursor:pointer;
   white-space:nowrap;
@@ -134,7 +150,7 @@ img{
   color:#fff;
   font-size:clamp(22px,4vw,44px);
   line-height:1.15;
-  font-family:'Swanky and Moo Moo', cursive; /* ✅ 明确指定字体 */
+  font-family:'Swanky and Moo Moo', cursive;
 }
 
 .page-2 .line-2{
@@ -217,7 +233,6 @@ function positionEntrance(){
 
   if(!walking.complete || !walking.naturalWidth) return;
 
-  // ✅ 用真实渲染尺寸（带小数），手机更准
   const sRect = stack.getBoundingClientRect();
   const stackWidth = sRect.width;
   const stackHeight = sRect.height;
@@ -229,7 +244,6 @@ function positionEntrance(){
   const walkingWidth = stackWidth * scale;
   const walkingHeight = walkingWidth * (walking.naturalHeight / walking.naturalWidth);
 
-  // 按钮宽度 = walking 的 2/5
   const btnWidth = walkingWidth * btnRatio;
   btn.style.width = btnWidth + "px";
   btn.style.justifyContent = "center";
@@ -255,7 +269,6 @@ window.addEventListener('load',()=>{
 });
 window.addEventListener('resize',rerun);
 
-// 尽量禁止右键/拖拽
 document.addEventListener('contextmenu',e=>e.preventDefault());
 document.addEventListener('dragstart',e=>e.preventDefault());
 
